@@ -1,0 +1,20 @@
+name: validate
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - run: corepack enable && corepack prepare pnpm@11.25.0 --activate
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: '1.90.0'
+          components: rustfmt, clippy
+      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev libdbus-1-dev ffmpeg
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm contracts:check && pnpm --dir frontend build
+      - run: pnpm check
+      - run: pnpm test

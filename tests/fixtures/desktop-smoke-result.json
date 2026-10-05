@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-05T01:56:36.323Z",
+  "platform": "linux",
+  "result": {
+    "passed": true,
+    "revisions": 1,
+    "revision": 1
+  },
+  "ui": {
+    "passed": true,
+    "characters": 3,
+    "revision": 5,
+    "structureAndVoice": true
+  }
+}

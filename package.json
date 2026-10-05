@@ -1,0 +1,23 @@
+{
+  "name": "ai-video-studio",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "dev": "node scripts/run.mjs dev",
+    "dev:web": "pnpm --dir frontend dev",
+    "check": "node scripts/run.mjs check",
+    "test": "node scripts/run.mjs test",
+    "test:e2e": "playwright test",
+    "build": "node scripts/run.mjs build",
+    "package": "node scripts/package.mjs",
+    "contracts:generate": "node scripts/contracts.mjs",
+    "contracts:check": "node scripts/contracts.mjs --check",
+    "test:desktop": "node scripts/desktop-smoke.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "json-schema-to-typescript": "15.0.4",
+    "prettier": "3.6.2"
+  }
+}

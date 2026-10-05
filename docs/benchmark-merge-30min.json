@@ -1,0 +1,16 @@
+{
+  "actualDurationMs": 1800021,
+  "avMarkerChecks": "passed: color and frequency before/after boundary at ±100ms and first/last samples",
+  "avMarkerSamplesSeconds": [
+    0.5,
+    1199.9,
+    1200.1,
+    1799.5
+  ],
+  "profile": "160x90 24fps output; 5fps red/440Hz and blue/880Hz sources",
+  "sourceDurationsSeconds": [
+    1200,
+    600
+  ],
+  "wallSeconds": 307.63601294
+}

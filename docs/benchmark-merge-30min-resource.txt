@@ -1,0 +1,23 @@
+	Command being timed: "/home/ngocntt/.cargo/bin/cargo test -p studio-backend --test long_video merge_twenty --offline -- --ignored --nocapture"
+	User time (seconds): 365.93
+	System time (seconds): 13.67
+	Percent of CPU this job got: 115%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 5:29.97
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 668816
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 757
+	Minor (reclaiming a frame) page faults: 348571
+	Voluntary context switches: 1808829
+	Involuntary context switches: 76336
+	Swaps: 0
+	File system inputs: 912
+	File system outputs: 263968
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -1,0 +1,1 @@
+{"identifier":"main-capability","description":"Main local editor; no frontend filesystem or shell access","windows":["main"],"permissions":["core:default"]}

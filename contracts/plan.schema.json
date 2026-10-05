@@ -1,0 +1,123 @@
+{
+  "type": "object",
+  "properties": {
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "scenes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "timeOfDay": {
+                  "type": "string"
+                },
+                "mood": {
+                  "type": "string"
+                },
+                "characterNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "shots": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "imagePrompt": {
+                        "type": "string"
+                      },
+                      "videoPrompt": {
+                        "type": "string"
+                      },
+                      "camera": {
+                        "type": "string"
+                      },
+                      "durationSeconds": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "description",
+                      "imagePrompt",
+                      "videoPrompt",
+                      "camera",
+                      "durationSeconds"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "dialogues": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "speakerName": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "emotion": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "speakerName",
+                      "text",
+                      "emotion"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "title",
+                "summary",
+                "location",
+                "timeOfDay",
+                "mood",
+                "characterNames",
+                "shots",
+                "dialogues"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "summary",
+          "scenes"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "chapters"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+node_modules/
+target/
+frontend/dist/
+frontend/src-tauri/gen/
+frontend/src-tauri/binaries/
+playwright-report/
+test-results/
+.env
+*.partial
+
+# Local credentials and generated files
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+Thumbs.db

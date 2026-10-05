@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "id": "0c51440b-5ccd-4ce8-96b9-8d1a7519f5e0",
+  "revision": 0,
+  "title": "Demo offline — Chuyến đi xanh",
+  "createdAt": "2026-09-28T00:00:00.000Z",
+  "updatedAt": "2026-09-28T00:00:00.000Z",
+  "language": "vi",
+  "story": {
+    "idea": "Một chuyến đi nhỏ để nhìn thành phố bằng đôi mắt mới.",
+    "synopsis": "An tìm một khu vườn yên tĩnh giữa nhịp sống thành phố.",
+    "fullContent": "Buổi sáng, An rời nhà và bước vào một khu vườn đầy ánh nắng.",
+    "genre": "Phim ngắn",
+    "audience": "Mọi lứa tuổi",
+    "style": "Minh họa tối giản",
+    "constraints": "Demo local, không sử dụng AI.",
+    "ending": "Một khoảng lặng xanh.",
+    "lockedFields": []
+  },
+  "video": {
+    "targetDurationMs": 4000,
+    "durationPolicy": "strict",
+    "width": 1280,
+    "height": 720,
+    "aspectRatio": "16:9",
+    "fps": {
+      "numerator": 30,
+      "denominator": 1
+    },
+    "fit": "contain",
+    "backgroundColor": "#101114"
+  },
+  "providerBindings": {
+    "text": null,
+    "image": null,
+    "video": null,
+    "voice": null
+  },
+  "characters": [
+    {
+      "id": "d90f3a5c-76d8-41ce-bea8-fae443047ca1",
+      "name": "An",
+      "role": "supporting",
+      "personality": "Tò mò và điềm tĩnh",
+      "strengths": "Quan sát",
+      "background": "Sống trong thành phố",
+      "appearance": "Tóc ngắn, nụ cười nhẹ",
+      "clothing": "Áo sơ mi xanh",
+      "mannerisms": "Bước chậm",
+      "continuityNotes": "",
+      "referenceAssetIds": [],
+      "lockedFields": []
+    }
+  ],
+  "chapters": [
+    {
+      "id": "e8acfebe-fa4a-4866-8f58-87cf83a1bd74",
+      "title": "Một sáng xanh",
+      "summary": "Bắt đầu hành trình",
+      "sceneIds": [
+        "7c835193-b928-4b59-94d6-ff2ddca2a350"
+      ]
+    }
+  ],
+  "scenes": [
+    {
+      "id": "7c835193-b928-4b59-94d6-ff2ddca2a350",
+      "title": "Khu vườn",
+      "summary": "Ánh sáng qua những tán lá.",
+      "location": "Khu vườn",
+      "timeOfDay": "Sáng",
+      "mood": "Yên bình",
+      "characterIds": [],
+      "continuityNotes": "",
+      "targetDurationMs": 4000,
+      "shots": [
+        {
+          "id": "efd0934d-be4a-4db1-a3f0-8b34d51800f3",
+          "description": "Khung cảnh khu vườn tối giản",
+          "characterIds": [],
+          "imagePrompt": "",
+          "videoPrompt": "",
+          "camera": "Tĩnh",
+          "durationFrames": 120,
+          "referenceAssetIds": [],
+          "selectedImageAssetId": "214fc563-ead9-4585-b9fb-764e548cb01f"
+        }
+      ],
+      "dialogues": [],
+      "lockedFields": [],
+      "reviewStatus": "approved"
+    }
+  ],
+  "assets": [
+    {
+      "id": "214fc563-ead9-4585-b9fb-764e548cb01f",
+      "kind": "image",
+      "relativePath": "assets/images/214fc563-ead9-4585-b9fb-764e548cb01f.png",
+      "originalName": "Minh họa local — không AI.png",
+      "mime": "image/png",
+      "bytes": 4392,
+      "sha256": "27020f2f90dd44484e659570230ee8b693dbd6a49cfcc8430dbe0bb36700376a",
+      "createdAt": "2026-09-28T00:00:00.000Z",
+      "origin": "imported",
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "timeline": {
+    "items": [
+      {
+        "id": "3cc97a2e-ee2c-450f-845f-91e88527e3aa",
+        "sceneId": "7c835193-b928-4b59-94d6-ff2ddca2a350",
+        "shotId": "efd0934d-be4a-4db1-a3f0-8b34d51800f3",
+        "assetId": "214fc563-ead9-4585-b9fb-764e548cb01f",
+        "inFrame": 0,
+        "durationFrames": 120,
+        "transitionOut": {
+          "kind": "cut",
+          "durationFrames": 0
+        },
+        "sourceAudio": "mute",
+        "sourceAudioGainDb": 0
+      }
+    ],
+    "audioTracks": [],
+    "subtitles": [
+      {
+        "id": "d9aaacec-d26b-4c95-9807-4b7740131ab7",
+        "startFrame": 0,
+        "endFrame": 120,
+        "text": "Một khoảng lặng xanh giữa lòng thành phố."
+      }
+    ],
+    "subtitleMode": "burn_in"
+  }
+}
