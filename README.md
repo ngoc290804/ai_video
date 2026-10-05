@@ -1,6 +1,6 @@
 # AI Video Studio
 
-Ứng dụng desktop local-first **React + TypeScript + Tauri 2**, backend Rust riêng tại `backend/`. Giao diện tiếng Việt, dữ liệu JSON + media files. Không có tài khoản ứng dụng hoặc database service.
+Ứng dụng máy tính bằng tiếng Việt để viết cốt truyện, quản lý nhân vật, dựng phân cảnh, ghép và xuất video. Dữ liệu dự án và media được lưu trên máy; không cần tài khoản ứng dụng hoặc cài máy chủ cơ sở dữ liệu.
 
 **Trạng thái: bản phát triển 0.1.0 chạy được; chưa nghiệm thu đầy đủ SPEC v1.** Xem [release checklist](docs/release-checklist.md) cho AC01–AC25, tính năng còn thiếu và bằng chứng test. Không có mock trong runtime desktop. Browser preview chỉ xem UI và thông báo rõ khi thiếu Tauri.
 
@@ -8,15 +8,26 @@
 
 **Người dùng chỉ cần bộ cài. Không cần cài Node.js, pnpm, Rust, Git hoặc thêm FFmpeg vào biến môi trường `PATH`.** Các công cụ đó chỉ dành cho người sửa mã nguồn/tạo bộ cài.
 
-Tải bản phù hợp tại [Releases](https://github.com/ngoc290804/ai_video/releases). Nếu chưa có bản phát hành, vào [Actions → Build installers](https://github.com/ngoc290804/ai_video/actions/workflows/installers.yml), chọn lần chạy thành công và tải **Artifacts** ở cuối trang (cần đăng nhập GitHub). Giải nén artifact để lấy bộ cài và `SHA256SUMS`. **Source code (zip)** và **Code → Download ZIP** là mã nguồn, không phải ứng dụng đã cài được.
+### Tải bộ cài đã kiểm tra
 
-| Máy sử dụng       | Tệp cần tải                                   | Những gì bộ cài xử lý                                       |
-| ----------------- | --------------------------------------------- | ----------------------------------------------------------- |
-| Windows 10/11 x64 | `ai-video-studio_0.1.0_windows-x64_setup.exe` | Kèm FFmpeg/FFprobe; tự cài WebView2 nếu thiếu.              |
-| Ubuntu 24.04 x64  | Tệp `.deb` có `ubuntu-24.04-amd64` trong tên  | Kèm FFmpeg/FFprobe; apt tự cài thư viện và codec cần thiết. |
-| Ubuntu 26.04 x64  | Tệp `.deb` có `ubuntu-26.04-amd64` trong tên  | Tạo trên Ubuntu 26.04; apt tự cài thư viện tương ứng.       |
+Bản **0.1.0** đã được tạo và kiểm tra trong [lần chạy Build installers thành công](https://github.com/ngoc290804/ai_video/actions/runs/37261961275):
 
-Tên tệp thay đổi theo phiên bản. Chỉ tải artifact của lần build và kiểm tra thành công. Bộ cài hiện chưa ký chứng chỉ; Windows vẫn cần nghiệm thu giao diện trên máy người dùng. Không dùng gói dành cho Ubuntu 26.04 trên 24.04. Quy trình GitHub tạo gói 24.04 và Windows; gói 26.04 được tạo trên máy chạy 26.04.
+| Máy sử dụng       | Tải xuống                                                                                                        | Tệp bên trong gói ZIP                          |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Windows 10/11 x64 | [Tải bộ cài Windows](https://github.com/ngoc290804/ai_video/actions/runs/37261961275/artifacts/11325525264)      | `ai-video-studio_0.1.0_windows-x64_setup.exe`  |
+| Ubuntu 24.04 x64  | [Tải bộ cài Ubuntu 24.04](https://github.com/ngoc290804/ai_video/actions/runs/37261961275/artifacts/11324564321) | `ai-video-studio_0.1.0_ubuntu-24.04-amd64.deb` |
+
+1. Đăng nhập GitHub rồi chọn liên kết đúng hệ điều hành.
+2. Giải nén tệp ZIP tải về; bên trong có bộ cài và `SHA256SUMS`.
+3. Làm theo mục **Windows** hoặc **Ubuntu** bên dưới. Không cần tải mã nguồn.
+
+Các artifact trên được lưu đến **04/11/2026**. Nếu liên kết hết hạn, vào [Actions → Build installers](https://github.com/ngoc290804/ai_video/actions/workflows/installers.yml) để tải artifact của lần chạy thành công mới hơn, hoặc tìm bản đã công bố tại [Releases](https://github.com/ngoc290804/ai_video/releases). **Source code (zip)** và **Code → Download ZIP** chỉ chứa mã nguồn, không phải bộ cài.
+
+**Ubuntu 26.04:** đã có gói tạo và kiểm tra trên máy phát triển, tại `target/installers/ubuntu-26.04-amd64/ai-video-studio_0.1.0_ubuntu-26.04-amd64.deb`. Gói này chưa nằm trong hai artifact GitHub bên trên; cần lấy từ người phân phối hoặc tự tạo trên Ubuntu 26.04 theo mục dành cho người phát triển. Không dùng gói 26.04 trên Ubuntu 24.04.
+
+Windows kèm FFmpeg/FFprobe và trình cài WebView2 ngoại tuyến; gói tải khoảng **277 MB**. Ubuntu kèm FFmpeg/FFprobe, còn apt tự tải thư viện và codec cần thiết; gói tải khoảng **8 MB**.
+
+**Phạm vi đã kiểm tra:** Ubuntu 24.04 và Windows Server 2022 đã cài thử và xuất video H.264/AAC có phụ đề tiếng Việt bằng FFmpeg đi kèm. Ubuntu 26.04 đã kiểm tra bộ cài giải nén, media và khởi động ứng dụng. Bộ cài chưa ký chứng chỉ; giao diện Windows 10/11 và cài ngoại tuyến trên máy Windows sạch vẫn cần nghiệm thu thêm.
 
 ### Windows
 
@@ -36,11 +47,25 @@ Tải đúng bản `.deb`, mở Terminal trong thư mục tải về và chạy:
 sudo apt install ./ai-video-studio_0.1.0_ubuntu-24.04-amd64.deb
 ```
 
-Thay tên tệp bằng tên bản đã tải (ví dụ `ubuntu-26.04-amd64` trên Ubuntu 26.04). Sau đó mở **AI Video Studio** trong menu ứng dụng. Không cần thiết lập biến môi trường.
+Nếu đã nhận bộ cài riêng cho Ubuntu 26.04, dùng lệnh tương ứng:
+
+```bash
+sudo apt install ./ai-video-studio_0.1.0_ubuntu-26.04-amd64.deb
+```
+
+Sau đó mở **AI Video Studio** trong menu ứng dụng. Không cần thiết lập biến môi trường.
 
 **Cần Internet nếu máy còn thiếu thư viện hệ thống**: apt tự tải WebKit/GTK, codec phát video và các thư viện media. `.deb` không phải gói portable dùng chung mọi bản Linux. Không dùng riêng `dpkg -i` nếu muốn hệ thống tự giải quyết phụ thuộc. Gỡ ứng dụng bằng `sudo apt remove ai-video-studio`; dữ liệu dự án vẫn được giữ.
 
 Tùy chọn kiểm tra tệp tải về: đặt `.deb` và `SHA256SUMS` cùng thư mục rồi chạy `sha256sum --check SHA256SUMS`. Trên PowerShell, chạy `Get-FileHash .\TEN_BO_CAI.exe -Algorithm SHA256` và so sánh với `SHA256SUMS`.
+
+### Câu hỏi thường gặp khi cài đặt
+
+- **Có phải cài Node.js, Rust, Visual Studio hoặc FFmpeg trước không?** Không, nếu dùng bộ cài `.exe`/`.deb`. Những công cụ này chỉ cần khi chạy hoặc sửa mã nguồn.
+- **Có phải thêm biến môi trường không?** Không. Ứng dụng tự tìm FFmpeg/FFprobe đi kèm và dùng thư mục dữ liệu mặc định.
+- **Có cài khi không có mạng được không?** Bộ cài Windows mặc định kèm WebView2 offline. Ubuntu cần mạng nếu còn thiếu thư viện hệ thống. Tính năng AI cần mạng và API key; dựng video từ media có sẵn không cần gọi AI.
+- **Tải về nhưng chỉ thấy mã nguồn?** Bạn đã chọn `Source code` hoặc `Download ZIP` ở mục Code. Hãy tải artifact bộ cài theo bảng trên và giải nén.
+- **Ubuntu báo không tìm thấy gói hoặc phụ thuộc?** Kiểm tra đúng bản Ubuntu, mở Terminal tại thư mục chứa `.deb`, chạy `sudo apt update`, rồi chạy lại `sudo apt install ./TEN_BO_CAI.deb`.
 
 ## Thiết lập lần đầu
 
