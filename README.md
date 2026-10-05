@@ -4,149 +4,97 @@
 
 **Trạng thái: bản phát triển 0.1.0 chạy được; chưa nghiệm thu đầy đủ SPEC v1.** Xem [release checklist](docs/release-checklist.md) cho AC01–AC25, tính năng còn thiếu và bằng chứng test. Không có mock trong runtime desktop. Browser preview chỉ xem UI và thông báo rõ khi thiếu Tauri.
 
-## Tải ứng dụng và mã nguồn
+## Cài ứng dụng: không cần môi trường lập trình
 
-Trên trang GitHub của dự án:
+**Người dùng chỉ cần bộ cài. Không cần cài Node.js, pnpm, Rust, Git hoặc thêm FFmpeg vào biến môi trường `PATH`.** Các công cụ đó chỉ dành cho người sửa mã nguồn/tạo bộ cài.
 
-- **Releases → Assets**: tải bộ cài đúng hệ điều hành nếu phiên bản đó đã được phát hành. `Source code (zip)` chỉ là mã nguồn, không phải bộ cài.
-- **Code → Download ZIP**: tải và giải nén mã nguồn, sau đó làm theo hướng dẫn bên dưới.
-- Hoặc chọn **Code → HTTPS**, sao chép URL và chạy (thay `URL_KHO_GITHUB` bằng URL vừa sao chép):
+Tải bản phù hợp tại [Releases](https://github.com/ngoc290804/ai_video/releases). Nếu chưa có bản phát hành, vào [Actions → Build installers](https://github.com/ngoc290804/ai_video/actions/workflows/installers.yml), chọn lần chạy thành công và tải **Artifacts** ở cuối trang (cần đăng nhập GitHub). Giải nén artifact để lấy bộ cài và `SHA256SUMS`. **Source code (zip)** và **Code → Download ZIP** là mã nguồn, không phải ứng dụng đã cài được.
+
+| Máy sử dụng       | Tệp cần tải                                   | Những gì bộ cài xử lý                                       |
+| ----------------- | --------------------------------------------- | ----------------------------------------------------------- |
+| Windows 10/11 x64 | `ai-video-studio_0.1.0_windows-x64_setup.exe` | Kèm FFmpeg/FFprobe; tự cài WebView2 nếu thiếu.              |
+| Ubuntu 24.04 x64  | Tệp `.deb` có `ubuntu-24.04-amd64` trong tên  | Kèm FFmpeg/FFprobe; apt tự cài thư viện và codec cần thiết. |
+| Ubuntu 26.04 x64  | Tệp `.deb` có `ubuntu-26.04-amd64` trong tên  | Tạo trên Ubuntu 26.04; apt tự cài thư viện tương ứng.       |
+
+Tên tệp thay đổi theo phiên bản. Chỉ tải artifact của lần build và kiểm tra thành công. Bộ cài hiện chưa ký chứng chỉ; Windows vẫn cần nghiệm thu giao diện trên máy người dùng. Không dùng gói dành cho Ubuntu 26.04 trên 24.04. Quy trình GitHub tạo gói 24.04 và Windows; gói 26.04 được tạo trên máy chạy 26.04.
+
+### Windows
+
+1. Tải tệp `*_setup.exe` và mở bằng nhấp đúp.
+2. Chọn ngôn ngữ, thư mục cài và hoàn tất trình cài đặt.
+3. Mở **AI Video Studio** từ Start Menu.
+
+Không phải tải FFmpeg, sửa `Path`, cài Visual Studio hoặc chạy lệnh. FFmpeg/FFprobe được đặt cạnh chương trình và được gọi bằng đường dẫn nội bộ. Bộ cài mặc định kèm trình cài WebView2 ngoại tuyến, nên dung lượng lớn hơn nhưng không cần tải WebView2 riêng trong lúc cài. Tính năng AI vẫn cần Internet và API key của bạn.
+
+Gỡ qua **Settings → Apps → Installed apps → AI Video Studio → Uninstall**. Sao lưu dữ liệu dự án trước khi chuyển máy; dữ liệu nằm ngoài thư mục cài đặt.
+
+### Ubuntu
+
+Tải đúng bản `.deb`, mở Terminal trong thư mục tải về và chạy:
 
 ```bash
-git clone URL_KHO_GITHUB ai-video-studio
-cd ai-video-studio
+sudo apt install ./ai-video-studio_0.1.0_ubuntu-24.04-amd64.deb
 ```
 
-Nếu dùng ZIP, mở Terminal/PowerShell ngay trong thư mục đã giải nén chứa `package.json`. Kho riêng tư yêu cầu tài khoản được cấp quyền truy cập.
+Thay tên tệp bằng tên bản đã tải (ví dụ `ubuntu-26.04-amd64` trên Ubuntu 26.04). Sau đó mở **AI Video Studio** trong menu ứng dụng. Không cần thiết lập biến môi trường.
 
-| Hệ điều hành      | Cách sử dụng hiện tại                                                                |
-| ----------------- | ------------------------------------------------------------------------------------ |
-| Ubuntu 26.04 x64  | Có quy trình tạo bộ cài `.deb`; có thể chạy từ mã nguồn.                             |
-| Windows 10/11 x64 | Hướng dẫn chạy thử từ mã nguồn; chưa kiểm thử và chưa có bộ cài Windows đã xác nhận. |
+**Cần Internet nếu máy còn thiếu thư viện hệ thống**: apt tự tải WebKit/GTK, codec phát video và các thư viện media. `.deb` không phải gói portable dùng chung mọi bản Linux. Không dùng riêng `dpkg -i` nếu muốn hệ thống tự giải quyết phụ thuộc. Gỡ ứng dụng bằng `sudo apt remove ai-video-studio`; dữ liệu dự án vẫn được giữ.
 
-README không khẳng định đã có tệp đính kèm trên Releases. Nếu chưa thấy bộ cài, dùng mã nguồn theo hướng dẫn dưới đây.
+Tùy chọn kiểm tra tệp tải về: đặt `.deb` và `SHA256SUMS` cùng thư mục rồi chạy `sha256sum --check SHA256SUMS`. Trên PowerShell, chạy `Get-FileHash .\TEN_BO_CAI.exe -Algorithm SHA256` và so sánh với `SHA256SUMS`.
 
-## Cài đặt trên Ubuntu
+## Thiết lập lần đầu
 
-### Cài bằng bộ cài `.deb`
+- Tạo dự án và nhập media để dựng video; chỉ làm việc với media có sẵn thì không bắt buộc có API key.
+- Để dùng AI, vào **Cài đặt**, thêm connection và API key, rồi chọn các binding cho dự án. Không ghi API key vào mã nguồn hoặc GitHub.
+- Dữ liệu ở `~/AI-Video-Studio/` trên Ubuntu hoặc thư mục `AI-Video-Studio` trong thư mục người dùng Windows. Không cần cấu hình biến môi trường cho vị trí mặc định.
+- Ubuntu: mở khóa keyring để lưu API key lâu dài; nếu môi trường không có Secret Service, chọn chỉ lưu trong phiên.
 
-Chỉ dùng bộ cài của dự án cho **Ubuntu 26.04 x64**. Tải tệp `.deb` và `SHA256SUMS` cùng phiên bản về một thư mục. Mở Terminal trong thư mục đó:
+## Dành cho người phát triển: tải và chạy mã nguồn
+
+**Bỏ qua mục này nếu chỉ muốn cài ứng dụng.** Mã nguồn: [ngoc290804/ai_video](https://github.com/ngoc290804/ai_video).
 
 ```bash
-sha256sum --check --ignore-missing SHA256SUMS
+git clone https://github.com/ngoc290804/ai_video.git
+cd ai_video
+```
+
+Toolchain: Node **22.16.0**, pnpm **11.25.0**, Rust **1.90.0** qua [rustup](https://rustup.rs/). `Cargo.lock` và `pnpm-lock.yaml` cố định dependency. Cài pnpm bằng `npm install --global pnpm@11.25.0` sau khi cài [Node.js](https://nodejs.org/download/release/v22.16.0/).
+
+Ubuntu: cài phụ thuộc build, sau đó chạy trong phiên desktop có giao diện đồ họa:
+
+```bash
 sudo apt update
-sudo apt install ./TEN_BO_CAI.deb
-```
-
-Thay `TEN_BO_CAI.deb` bằng tên tệp thực tế; chỉ cài khi kiểm tra checksum báo `OK`. Mở **AI Video Studio** từ menu ứng dụng. Bản đóng gói kèm FFmpeg/FFprobe và khai báo thư viện phụ thuộc; người dùng không cần cài Node.js hoặc Rust. Bộ cài hiện chưa ký chứng chỉ.
-
-Gỡ ứng dụng bằng `sudo apt remove ai-video-studio`; dữ liệu dự án vẫn được giữ lại. Không dùng gói này trên Ubuntu cũ hơn vì phiên bản thư viện media có thể không tương thích.
-
-### Chạy từ mã nguồn
-
-1. Tải mã nguồn như mục trên.
-2. Cài công cụ và thư viện hệ thống:
-
-```bash
-sudo apt update
-sudo apt install -y git curl build-essential pkg-config libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev libsecret-1-dev libdbus-1-dev ffmpeg
-```
-
-3. Cài [Node.js 22.16.0](https://nodejs.org/download/release/v22.16.0/) và [Rust qua rustup](https://rustup.rs/). Mở lại Terminal sau khi cài, rồi cài pnpm:
-
-```bash
-npm install --global pnpm@11.25.0
-```
-
-4. Trong thư mục gốc dự án, kiểm tra môi trường và chạy ứng dụng:
-
-```bash
-node --version
-pnpm --version
-rustup show
-ffmpeg -version
-ffprobe -version
+sudo apt install -y build-essential pkg-config dpkg-dev libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev libsecret-1-dev libdbus-1-dev ffmpeg
 pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Rustup đọc `rust-toolchain.toml` để sử dụng Rust **1.90.0**. Lần chạy đầu cần mạng để tải thư viện và biên dịch. Chạy trong phiên desktop có giao diện đồ họa. Linux cần keyring/Secret Service hoạt động để lưu API key lâu dài; có thể chọn chỉ lưu trong phiên.
-
-Muốn tự tạo bộ cài trên Ubuntu 26.04 x64:
+Windows: cài Build Tools for Visual Studio với **Desktop development with C++**/Windows SDK, Rust MSVC và WebView2 theo [yêu cầu Tauri](https://v2.tauri.app/start/prerequisites/#windows). Chạy `pnpm.cmd install --frozen-lockfile`, rồi `pnpm.cmd dev`. Khi phát triển, cần FFmpeg/FFprobe trong `PATH` để thử tính năng media; bản đóng gói không có yêu cầu này. Dùng `pnpm.cmd` nếu PowerShell chặn `pnpm.ps1`.
 
 ```bash
-pnpm package
+pnpm dev                  # Desktop Tauri + Vite
+pnpm dev:web              # Preview UI localhost:1420; không có backend desktop
+pnpm contracts:generate   # JSON Schema → TypeScript
+pnpm contracts:check      # Kiểm tra generated contract
+pnpm check                # Contracts, TypeScript, rustfmt, clippy
+pnpm test                 # Frontend + backend/media tests
+pnpm test:e2e             # Browser UI; khởi động pnpm dev:web trước
+pnpm test:desktop         # Native WebDriver smoke; xem bên dưới
+pnpm build                # Biên dịch; chưa phải bộ cài có đầy đủ media tools
+pnpm package              # Bộ cài .deb (Ubuntu) hoặc .exe (Windows), kèm media tools
 ```
 
-Kết quả nằm trong `target/release/bundle/deb/`, gồm `.deb` và `SHA256SUMS`.
+## Tạo bộ cài để gửi cho người dùng
 
-## Cài đặt và chạy thử trên Windows
+Cách tiện nhất: mở [Actions → Build installers](https://github.com/ngoc290804/ai_video/actions/workflows/installers.yml) → **Run workflow**. GitHub chuẩn bị môi trường, build Ubuntu 24.04 và Windows, thử cài gói và render bằng FFmpeg đi kèm, rồi lưu bộ cài trong Artifacts. Workflow cũng chạy khi đẩy tag `v*`; không tự công bố GitHub Release.
 
-**Windows chưa được build/kiểm thử trong dự án này.** Các bước sau hướng dẫn chuẩn bị và chạy từ mã nguồn, không phải cam kết hỗ trợ một bộ cài hoàn chỉnh. Script `pnpm package` hiện chỉ dành cho Linux.
+Hoặc chạy `pnpm package` trên Ubuntu / `pnpm.cmd package` trên Windows. Kết quả nằm ở `target/installers/<hệ-điều-hành>/`, gồm bộ cài và `SHA256SUMS`.
 
-1. Cài [Git for Windows](https://git-scm.com/downloads/win) nếu tải bằng Git và [Node.js 22.16.0 x64](https://nodejs.org/download/release/v22.16.0/).
-2. Cài **Build Tools for Visual Studio** với workload **Desktop development with C++** và Windows SDK; cài **Microsoft Edge WebView2 Runtime** nếu máy chưa có. Xem [yêu cầu chính thức của Tauri cho Windows](https://v2.tauri.app/start/prerequisites/#windows).
-3. Cài [Rust bằng rustup](https://rustup.rs/), chọn toolchain MSVC mặc định trên Windows.
-4. Tải FFmpeg cho Windows từ các liên kết tại [trang tải FFmpeg](https://ffmpeg.org/download.html), giải nén và thêm thư mục `bin` chứa **cả `ffmpeg.exe` và `ffprobe.exe`** vào biến môi trường `Path` của tài khoản. Chọn bản có encoder `libx264`, AAC và bộ lọc phụ đề `subtitles`/libass.
-5. Mở cửa sổ PowerShell mới, cài pnpm:
+- Ubuntu: tự dò phụ thuộc của executable ứng dụng và FFmpeg bằng `dpkg-shlibdeps`, không ghi cứng phiên bản libav. Bộ cài có tên bản Ubuntu đã build để tránh tải nhầm.
+- Windows: tự tải FFmpeg static cố định phiên bản và xác minh SHA-256 trên máy build; không sửa `PATH`. NSIS đóng gói FFmpeg/FFprobe, giấy phép và WebView2 offline. Có thể chọn bộ cài nhỏ hơn bằng `pnpm.cmd package --webview-online` (máy người dùng cần Internet nếu thiếu WebView2).
+- Bản biên dịch thô từ `pnpm build` chưa đủ để phân phối: runtime release tìm `studio-ffmpeg`/`studio-ffprobe` cạnh executable. Dùng `pnpm package` để tránh thiếu các tệp này.
 
-```powershell
-npm.cmd install --global pnpm@11.25.0
-```
-
-6. Tải/giải nén mã nguồn, mở PowerShell trong thư mục chứa `package.json`, rồi chạy:
-
-```powershell
-node --version
-pnpm.cmd --version
-rustup show
-ffmpeg -version
-ffprobe -version
-pnpm.cmd install --frozen-lockfile
-pnpm.cmd dev
-```
-
-Dùng `pnpm.cmd` giúp tránh lỗi PowerShell chặn tệp `pnpm.ps1`. Không cần tắt chính sách bảo mật PowerShell. Nếu lệnh không được nhận diện, kiểm tra `Path` rồi mở lại terminal.
-
-Có thể thử biên dịch bản release bằng `pnpm.cmd build`; nếu thành công, tệp thực thi nằm ở `target/release/ai-video-studio.exe`. Đây chưa phải bộ cài độc lập; máy chạy vẫn cần WebView2 và FFmpeg/FFprobe trong `Path`. Chưa có quy trình đóng gói FFmpeg hoặc kiểm thử `.msi`/NSIS cho Windows.
-
-## Thiết lập lần đầu
-
-- Mở ứng dụng, tạo dự án và nhập media để thử dựng video; không bắt buộc có API key khi chỉ làm việc với media có sẵn.
-- Để dùng AI, vào **Cài đặt**, thêm connection và API key rồi chọn các binding cho dự án. Không ghi API key vào mã nguồn, README hoặc GitHub.
-- Dữ liệu mặc định ở `~/AI-Video-Studio/` trên Ubuntu hoặc thư mục `AI-Video-Studio` trong thư mục người dùng Windows. Sao lưu cả thư mục dự án trước khi chuyển máy.
-
-## Chạy trên máy phát triển
-
-Node **22.16.0**, pnpm **11.25.0**, Rust **1.90.0** (toolchain pin). `Cargo.lock` và `pnpm-lock.yaml` pin dependency đã resolve.
-
-Ubuntu 26.04 x64 (máy đã dùng để build/test):
-
-```bash
-sudo apt-get update
-sudo apt-get install -y build-essential pkg-config libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev libsecret-1-dev ffmpeg
-pnpm install
-pnpm dev
-```
-
-Các script root tự thêm `~/.cargo/bin` vào PATH khi gọi Rust/Tauri. Rust phải được cài qua rustup trước. FFmpeg development cần libx264/AAC, libass cho phụ đề. Linux desktop cần D-Bus/Secret Service để lưu key bền vững; nếu không có, chọn session-only.
-
-```bash
-pnpm dev                  # Desktop Tauri + Vite, không phải website thay thế app
-pnpm dev:web              # Preview giao diện trên localhost:1420; không có backend mock
-pnpm contracts:generate   # JSON Schema → generated TypeScript
-pnpm contracts:check      # Kiểm tra generated contract không drift
-pnpm check                # Contracts, TypeScript, rustfmt, clippy -D warnings
-pnpm test                 # Frontend unit + Rust domain/storage/FFmpeg integration
-pnpm test:e2e             # Browser UI check; khởi động pnpm dev:web trước
-pnpm test:desktop         # Native WebDriver smoke; xem hướng dẫn bên dưới
-pnpm build                # Frontend + Rust release binary
-pnpm package              # Unsigned Ubuntu .deb, media binaries, license manifest, SHA256SUMS
-```
-
-`pnpm package` kiểm tra FFmpeg/FFprobe cài từ Ubuntu rồi đóng gói thành `studio-ffmpeg` và `studio-ffprobe`, tránh trùng tên file hệ thống. `.deb` khai báo phụ thuộc libav/WebKit/GTK; máy người dùng không cần Node, Rust hoặc cài executable FFmpeg riêng. Profile đóng gói hiện dành cho **Ubuntu 26.04 x64**; không dùng installer này cho Ubuntu cũ hơn. Windows/macOS có mã Tauri nhưng chưa build/kiểm thử/đóng gói; không được công bố supported. Certificate ký chưa được cung cấp.
-
-Bộ cài ở `target/release/bundle/deb/`. Cài bằng `sudo apt install ./<tên-file>.deb` để apt giải quyết thư viện runtime. Gỡ gói không xóa dữ liệu dự án.
+Chi tiết kỹ thuật và kiểm tra: [docs/packaging.md](docs/packaging.md).
 
 ## Dùng ứng dụng
 

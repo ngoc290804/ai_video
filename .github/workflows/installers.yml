@@ -1,0 +1,60 @@
+name: Build installers
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            artifact: ubuntu-24.04-amd64
+          - os: windows-2022
+            artifact: windows-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+      - run: npm install --global pnpm@11.25.0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.90.0"
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: installer-${{ matrix.os }}
+      - name: Install Ubuntu build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config dpkg-dev libwebkit2gtk-4.1-dev libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev libdbus-1-dev ffmpeg
+      - run: pnpm install --frozen-lockfile
+      - name: Build installer with bundled media tools
+        run: pnpm package
+      - name: Install and verify Ubuntu package
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y ./target/installers/ubuntu-24.04-amd64/*.deb
+          node scripts/packaging/verify-media.mjs /usr/bin
+      - name: Install and verify Windows package
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $installer = Get-ChildItem target/installers/windows-x64/*_setup.exe | Select-Object -First 1
+          $installDir = Join-Path $env:RUNNER_TEMP 'AI Video Studio install'
+          $result = Start-Process -FilePath $installer.FullName -ArgumentList @('/S', "/D=$installDir") -Wait -PassThru
+          if ($result.ExitCode -ne 0) { throw "Installer exited with $($result.ExitCode)" }
+          if (!(Test-Path (Join-Path $installDir 'ai-video-studio.exe'))) { throw 'Application was not installed' }
+          node scripts/packaging/verify-media.mjs "$installDir"
+          if ($LASTEXITCODE -ne 0) { throw 'Bundled media smoke test failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-video-studio-${{ matrix.artifact }}
+          path: target/installers/${{ matrix.artifact }}/
+          if-no-files-found: error
+          retention-days: 30
