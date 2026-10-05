@@ -1,6 +1,6 @@
 # Release checklist — development build 0.1.0
 
-This is **not a fully accepted SPEC v1 release**. PASS below applies only to the named tested subset. No paid AI request was made. No Windows/macOS build or clean-machine installer test was performed. Native desktop tests use the real Tauri host/backend; browser tests do not substitute for them.
+This is **not a fully accepted SPEC v1 release**. PASS below applies only to the named tested subset. No paid AI request was made. The original baseline covered Ubuntu only; later installer checks are recorded at the end of this document. Clean-machine UI acceptance and macOS packaging remain pending. Native desktop tests use the real Tauri host/backend; browser tests do not substitute for them.
 
 ## Milestones
 
@@ -91,5 +91,11 @@ Do not relabel this checklist as all-pass based solely on successful compilation
 - Ubuntu packaging now derives versioned runtime dependencies from the built application and both media executables with `dpkg-shlibdeps`; apt also installs GStreamer playback codecs. The generated package no longer hardcodes Ubuntu 26.04 libav package names.
 - Added native Windows NSIS packaging with pinned, SHA-256-verified static FFmpeg/FFprobe and the offline WebView2 installer. Windows build/install/media verification runs separately on GitHub; no Windows UI acceptance is implied.
 - Added `Build installers` workflow for Ubuntu 24.04 and Windows x64, with installed media rendering checks before artifacts are uploaded. Artifacts are not automatically published as releases.
-- Local Ubuntu 26.04 package built successfully; extracted media rendered H.264/AAC and Vietnamese subtitles with no system FFmpeg in PATH. Apt dependency resolution simulation passed. This is not a clean-machine or offline-install test.
+- Local Ubuntu 26.04 package built successfully; extracted media rendered H.264/AAC and Vietnamese subtitles with no system FFmpeg in PATH. Apt dependency resolution simulation passed. The extracted application also stayed running for a 12-second startup smoke under Xvfb using a separate temporary data directory. This is not a clean-machine or offline-install test.
 - Generated bundle configurations validated against the installed Tauri JSON schema. Runtime application logic was unchanged.
+
+### Installer verification evidence
+
+- [GitHub Actions run 37261961275](https://github.com/ngoc290804/ai_video/actions/runs/37261961275), packaging source commit `0873561`: Ubuntu 24.04 `.deb` built and installed through apt; bundled media H.264/AAC/Vietnamese-subtitle smoke passed.
+- The same run built the Windows x64 NSIS installer with offline WebView2, silently installed it into a path containing spaces on Windows Server 2022, confirmed the application executable exists, and passed the same bundled media smoke with system FFmpeg removed from PATH. This does not verify Windows 10/11 UI or offline setup on a clean machine without WebView2.
+- Existing `validate` workflow also passed for `0873561` (contracts, frontend build, Rust checks and tests).

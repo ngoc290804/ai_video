@@ -42,3 +42,7 @@ Workflow `Build installers` chạy thủ công hoặc khi có tag `v*`. Hai runn
 Runner CI đã có nhiều thành phần hệ thống. Thành công trên runner không chứng minh cài được offline trên máy Windows sạch. Trước khi phát hành chính thức, kiểm tra thêm Windows chưa có WebView2, mở/lưu dự án, preview/render và gỡ/cài lại; kiểm tra Ubuntu desktop sạch đúng phiên bản. Không gọi AI trả phí trong installer smoke.
 
 Tham khảo: [Windows installer/WebView2 của Tauri](https://v2.tauri.app/distribute/windows-installer/), [Debian packaging của Tauri](https://v2.tauri.app/distribute/debian/), [FFmpeg Windows builds của Gyan](https://www.gyan.dev/ffmpeg/builds/).
+
+## Kết quả đã kiểm tra
+
+[Run 37261961275](https://github.com/ngoc290804/ai_video/actions/runs/37261961275) đã build, cài thử và kiểm tra media thành công trên Ubuntu 24.04 và Windows Server 2022 x64. Bộ cài Windows hướng tới Windows 10/11; kiểm thử giao diện và máy Windows sạch chưa có WebView2 vẫn cần thực hiện trước khi phát hành chính thức. Bản Ubuntu 26.04 đã build và thử media/khởi động trên máy phát triển.
