@@ -1,5 +1,8 @@
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
+# GitHub's parent shell can be PowerShell 7. Use this child Windows PowerShell's
+# own modules instead of inheriting incompatible module paths from that shell.
+$env:PSModulePath = Join-Path $PSHOME 'Modules'
 # Pinned static build: no FFmpeg installation or PATH changes on the user's machine.
 $version = '9.0.2'
 $expectedHash = '60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba'

@@ -85,3 +85,11 @@ Do not relabel this checklist as all-pass based solely on successful compilation
 - `pnpm check` passed (contracts, TypeScript, rustfmt, clippy); browser E2E passed.
 - Final extracted `.deb` passed native UI create/three-character/autosave, character voice mapping and chapter/scene/shot duplicate/reorder checks in `/tmp/ai-studio-acceptance-oct05`. Screenshot reviewed: `tests/fixtures/native-desktop.png`.
 - Final installer SHA-256: `9f37c7368f174fe1fdcba7b2e945d9192de63b459c3dfe20df7b633b4cf01f50`.
+
+## Installer simplification (2026-10-05)
+
+- Ubuntu packaging now derives versioned runtime dependencies from the built application and both media executables with `dpkg-shlibdeps`; apt also installs GStreamer playback codecs. The generated package no longer hardcodes Ubuntu 26.04 libav package names.
+- Added native Windows NSIS packaging with pinned, SHA-256-verified static FFmpeg/FFprobe and the offline WebView2 installer. Windows build/install/media verification runs separately on GitHub; no Windows UI acceptance is implied.
+- Added `Build installers` workflow for Ubuntu 24.04 and Windows x64, with installed media rendering checks before artifacts are uploaded. Artifacts are not automatically published as releases.
+- Local Ubuntu 26.04 package built successfully; extracted media rendered H.264/AAC and Vietnamese subtitles with no system FFmpeg in PATH. Apt dependency resolution simulation passed. This is not a clean-machine or offline-install test.
+- Generated bundle configurations validated against the installed Tauri JSON schema. Runtime application logic was unchanged.
